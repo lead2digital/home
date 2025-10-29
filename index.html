@@ -150,35 +150,41 @@
       font-weight: 600;
       letter-spacing: -0.045em;
       margin: 0;
+
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: .5rem;
       align-items: center;
+
+      /* mehr Abstand zwischen Name und Flagge */
+      gap: 0.75rem;
     }
 
     .brand-flag-wrapper {
       display: inline-flex;
       align-items: center;
-      height: 1em;
+      height: 1em;       /* orientiert sich an der Textgröße */
       line-height: 1;
     }
 
-    /* Emoji + Fallback-Flagge */
+    /* Emoji etwas kleiner */
     .brand-flag-emoji {
-      font-size: .8em;
+      font-size: .7em;
       line-height: 1;
     }
 
+    /* SVG fallback etwas kleiner als vorher (0.8em statt 1em) */
     .brand-flag-fallback {
       display: none; /* wird bei fehlender Emoji-Unterstützung aktiviert */
-      width: 1em;
-      height: 1em;
-      min-width: 1em;
-      min-height: 1em;
+      width: 0.8em;
+      height: 0.8em;
+      min-width: 0.8em;
+      min-height: 0.8em;
       line-height: 1;
+
       border-radius: 0.2em;
       box-shadow: 0 6px 16px rgba(0,0,0,.6);
+
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -219,7 +225,6 @@
     }
 
     .skills-list {
-      /* responsive grid of chips */
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(min(16rem,100%), 1fr));
       gap: .75rem;
@@ -419,7 +424,7 @@
       </h1>
 
       <p class="subtext">
-        Wir arbeiten mit ausgewählten Schweizer Partnern, um zusammen die Digitalisierung voranzutreiben
+        Wir arbeiten mit ausgewählten Schweizer Partnern, um zusammen die Digitalisierung voranzutreiben.
       </p>
 
       <div class="services" aria-labelledby="services-label">
@@ -480,14 +485,12 @@
         ctx.fillText("🇨🇭", 0, 0);
 
         const data = ctx.getImageData(0, 0, 32, 32).data;
-        // Heuristik: wenn Emoji nur als "CH" gerendert wird, ist es typischerweise
-        // fast einfarbig (Graustufen). Eine echte Flagge enthält Rot/Weiss mit starkem Rot-Anteil.
+        // Heuristik: Wenn das Emoji nur als "CH" gerendert wird, fehlen kräftige Rottöne.
         let coloredPixelFound = false;
         for (let i = 0; i < data.length; i += 4) {
           const r = data[i];
           const g = data[i + 1];
           const b = data[i + 2];
-          // check if pixel is noticeably reddish or generally colored
           if (r > g + 20 || r > b + 20) {
             coloredPixelFound = true;
             break;
@@ -507,13 +510,13 @@
       if (!emojiEl || !fallbackEl) return;
 
       if (hasFlagSupport) {
-        // keep emoji visible, hide fallback
+        // Emoji bleibt sichtbar
         emojiEl.style.display = "inline-block";
         fallbackEl.style.display = "none";
         fallbackEl.setAttribute("aria-hidden", "true");
         emojiEl.setAttribute("aria-hidden", "false");
       } else {
-        // hide emoji, show fallback SVG icon
+        // Emoji ausblenden, stattdessen SVG zeigen
         emojiEl.style.display = "none";
         fallbackEl.style.display = "inline-block";
         fallbackEl.setAttribute("aria-hidden", "false");
@@ -547,7 +550,6 @@
     if (!prefersReduced && window.matchMedia("(pointer:fine)").matches) {
       window.addEventListener("pointermove", updateBlobs);
     } else {
-      // static-ish default for touch / reduced motion
       updateBlobs({ clientX: window.innerWidth * 0.5, clientY: window.innerHeight * 0.4 });
     }
   </script>
