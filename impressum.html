@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Impressum · Lead 2 Digital</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --fg: #f8fafc;
+      --muted: #94a3b8;
+      --border: rgba(255,255,255,0.08);
+      --radius-lg: 1.25rem;
+      --radius-sm: .5rem;
+      --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --content-max: 48rem;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #ffffff;
+        --fg: #0f172a;
+        --muted: #475569;
+        --border: rgba(0,0,0,0.08);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-stack);
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: radial-gradient(circle at 20% 20%, rgba(96,165,250,.12) 0%, rgba(0,0,0,0) 60%),
+                  radial-gradient(circle at 80% 30%, rgba(16,185,129,.12) 0%, rgba(0,0,0,0) 60%),
+                  var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 1.5rem 3rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: clamp(1.75rem,2vw,2rem);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+      font-weight: 600;
+      margin: 0 0 .5rem 0;
+    }
+
+    header .backlink {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: .9rem;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+    header .backlink:hover,
+    header .backlink:focus-visible {
+      color: var(--fg);
+      border-color: var(--fg);
+      outline: none;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+      display: grid;
+      gap: 2rem;
+      line-height: 1.5;
+      font-size: 1rem;
+    }
+
+    section {
+      background-color: rgba(15,23,42,0.4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1.5rem 1.25rem;
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.6),
+        0 2px 4px rgba(0,0,0,.4);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+    }
+
+    @media (prefers-color-scheme: light) {
+      section {
+        background-color: rgba(255,255,255,0.6);
+        box-shadow: 0 16px 32px rgba(0,0,0,.08);
+      }
+    }
+
+    section h2 {
+      margin: 0 0 .75rem 0;
+      font-size: 1rem;
+      line-height: 1.4;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+    }
+
+    p {
+      margin: 0 0 .75rem 0;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    address {
+      font-style: normal;
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: .75rem;
+      line-height: 1.4;
+      text-align: center;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    .smallprint {
+      max-width: var(--content-max);
+      margin: 0 auto;
+    }
+
+    a.mail {
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+    }
+    a.mail:hover,
+    a.mail:focus-visible {
+      color: var(--fg);
+      outline: none;
+      border-color: var(--fg);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Impressum</h1>
+    <a class="backlink" href="index.html" aria-label="Zurück zur Startseite">
+      ← Zurück
+    </a>
+  </header>
+
+  <main>
+    <section aria-labelledby="kontakt">
+      <h2 id="kontakt">Kontaktadresse</h2>
+      <address>
+zurlex GmbH
+Rietwisstrasse 25
+9100 Herisau
+Schweiz
+
+CHE-356.992.876
+      </address>
+      <p>
+E-Mail: <a class="mail" href="mailto:sales@lead2digital.ch">sales@lead2digital.ch</a>
+      </p>
+    </section>
+
+    <section aria-labelledby="haftungsausschluss">
+      <h2 id="haftungsausschluss">Haftungsausschluss</h2>
+      <p>
+Der Autor übernimmt keinerlei Gewähr hinsichtlich der inhaltlichen Richtigkeit, Genauigkeit, Aktualität, Zuverlässigkeit und Vollständigkeit der Informationen. Haftungsansprüche gegen den Autor wegen Schäden materieller oder immaterieller Art, welche aus dem Zugriff oder der Nutzung bzw. Nichtnutzung der veröffentlichten Informationen, durch Missbrauch der Verbindung oder durch technische Störungen entstanden sind, werden ausgeschlossen.
+
+Alle Angebote sind unverbindlich. Der Autor behält es sich ausdrücklich vor, Teile der Seiten oder das gesamte Angebot ohne gesonderte Ankündigung zu verändern, zu ergänzen, zu löschen oder die Veröffentlichung zeitweise oder endgültig einzustellen.
+      </p>
+    </section>
+
+    <section aria-labelledby="links">
+      <h2 id="links">Haftung für Links</h2>
+      <p>
+Verweise und Links auf Webseiten Dritter liegen ausserhalb unseres Verantwortungsbereichs. Es wird jegliche Verantwortung für solche Webseiten abgelehnt. Der Zugriff und die Nutzung solcher Webseiten erfolgen auf eigene Gefahr des Nutzers oder der Nutzerin.
+      </p>
+    </section>
+
+    <section aria-labelledby="urheberrecht">
+      <h2 id="urheberrecht">Urheberrechte</h2>
+      <p>
+Die Urheber- und alle anderen Rechte an Inhalten, Bildern, Fotos oder anderen Dateien auf der Website gehören ausschliesslich der oben genannten Firma/Person oder den speziell genannten Rechtsinhabern. Für die Reproduktion jeglicher Elemente ist die schriftliche Zustimmung der Urheberrechtsträger im Voraus einzuholen.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="smallprint">
+      &copy; <span id="year"></span> Lead 2 Digital · Alle Rechte vorbehalten.
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
