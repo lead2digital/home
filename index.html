@@ -20,7 +20,6 @@
 
       --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-      /* animated blob positions (updated via JS on mousemove) */
       --blob1-x: 20%;
       --blob1-y: 20%;
       --blob2-x: 80%;
@@ -36,19 +35,15 @@
       }
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
-    }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 
+    html, body { height: 100%; }
     body {
       margin: 0;
       min-height: 100vh;
       background-color: var(--bg);
       color: var(--fg);
       font-family: var(--font-stack);
-
       display: flex;
       flex-direction: column;
       position: relative;
@@ -59,9 +54,16 @@
     .bg-layer {
       position: fixed;
       inset: 0;
-      overflow: hidden;
       pointer-events: none;
       z-index: 0;
+
+      /* Fix gegen zu viel Scrollhöhe */
+      overflow: clip;            /* modern */
+      contain: paint;            /* clippt Malfläche */
+      clip-path: inset(0);       /* zusätzliche harte Kante */
+    }
+    @supports not (overflow: clip) {
+      .bg-layer { overflow: hidden; }
     }
 
     .blob {
@@ -76,43 +78,27 @@
       mix-blend-mode: screen;
       transition: transform .3s ease-out;
     }
-
-    .blob.blob-1 {
-      background: radial-gradient(circle at 50% 50%, rgba(96,165,250,.22) 0%, rgba(0,0,0,0) 70%);
-      transform: translate3d(var(--blob1-x), var(--blob1-y), 0) scale(1);
-    }
-
+    .blob.blob-1 { transform: translate3d(var(--blob1-x), var(--blob1-y), 0) scale(1); }
     .blob.blob-2 {
       background: radial-gradient(circle at 50% 50%, rgba(16,185,129,.22) 0%, rgba(0,0,0,0) 70%);
       transform: translate3d(var(--blob2-x), var(--blob2-y), 0) scale(1.1);
     }
 
     @media (prefers-color-scheme: light) {
-      .blob.blob-1 {
-        background: radial-gradient(circle at 50% 50%, rgba(96,165,250,.28) 0%, rgba(255,255,255,0) 70%);
-      }
-      .blob.blob-2 {
-        background: radial-gradient(circle at 50% 50%, rgba(16,185,129,.28) 0%, rgba(255,255,255,0) 70%);
-      }
+      .blob.blob-1 { background: radial-gradient(circle at 50% 50%, rgba(96,165,250,.28) 0%, rgba(255,255,255,0) 70%); }
+      .blob.blob-2 { background: radial-gradient(circle at 50% 50%, rgba(16,185,129,.28) 0%, rgba(255,255,255,0) 70%); }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-      .blob {
-        transition: none;
-      }
-    }
+    @media (prefers-reduced-motion: reduce) { .blob { transition: none; } }
 
     /* --- main content --- */
     main {
       flex: 1;
       position: relative;
       z-index: 1;
-
       max-width: 72rem;
       width: 100%;
       margin: 0 auto;
       padding: clamp(2rem,4vw,4rem) 1.5rem 2rem;
-
       display: grid;
       place-content: center;
       text-align: center;
@@ -126,22 +112,11 @@
       gap: 1.5rem;
       opacity: 0;
       transform: translateY(20px) scale(.98);
-      transition:
-        opacity .6s cubic-bezier(.16,1,.3,1),
-        transform .6s cubic-bezier(.16,1,.3,1);
+      transition: opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1);
     }
-
-    body.ready .hero {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
+    body.ready .hero { opacity: 1; transform: translateY(0) scale(1); }
     @media (prefers-reduced-motion: reduce) {
-      .hero {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-      }
+      .hero { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
 
     h1 {
@@ -150,52 +125,25 @@
       font-weight: 600;
       letter-spacing: -0.045em;
       margin: 0;
-
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-
-      /* mehr Abstand zwischen Name und Flagge */
       gap: 0.75rem;
     }
 
-    .brand-flag-wrapper {
-      display: inline-flex;
-      align-items: center;
-      height: 1em;       /* orientiert sich an der Textgröße */
-      line-height: 1;
-    }
+    .brand-flag-wrapper { display: inline-flex; align-items: center; height: 1em; line-height: 1; }
+    .brand-flag-emoji { font-size: .7em; line-height: 1; }
 
-    /* Emoji etwas kleiner */
-    .brand-flag-emoji {
-      font-size: .7em;
-      line-height: 1;
-    }
-
-    /* SVG fallback etwas kleiner als vorher (0.6em statt 1em) */
     .brand-flag-fallback {
-      display: none; /* wird bei fehlender Emoji-Unterstützung aktiviert */
-      width: 0.6em;
-      height: 0.6em;
-      min-width: 0.6em;
-      min-height: 0.6em;
-      line-height: 1;
-
+      display: none;
+      width: 0.6em; height: 0.6em; min-width: 0.6em; min-height: 0.6em; line-height: 1;
       border-radius: 0.2em;
       box-shadow: 0 6px 16px rgba(0,0,0,.6);
-
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+      background-size: cover; background-position: center; background-repeat: no-repeat;
       background-image: url("Flag_of_Switzerland.svg.png");
     }
-
-    @media (prefers-color-scheme: light) {
-      .brand-flag-fallback {
-        box-shadow: 0 6px 12px rgba(0,0,0,.2);
-      }
-    }
+    @media (prefers-color-scheme: light) { .brand-flag-fallback { box-shadow: 0 6px 12px rgba(0,0,0,.2); } }
 
     .subtext {
       font-size: clamp(1rem,1vw,1.125rem);
@@ -208,21 +156,8 @@
     }
 
     /* --- services / kompetenzen --- */
-    .services {
-      display: grid;
-      gap: 1rem;
-      justify-items: center;
-      margin-top: .5rem;
-    }
-
-    .services-label {
-      font-size: .75rem;
-      line-height: 1.4;
-      font-weight: 500;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
+    .services { display: grid; gap: 1rem; justify-items: center; margin-top: .5rem; }
+    .services-label { font-size: .75rem; line-height: 1.4; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
 
     .skills-list {
       display: grid;
@@ -230,11 +165,8 @@
       gap: .75rem;
       width: 100%;
       max-width: 40rem;
-      margin: 0;
-      padding: 0;
-      list-style: none;
+      margin: 0; padding: 0; list-style: none;
     }
-
     .skills-list li {
       background-color: var(--chip-bg);
       border: 1px solid var(--border);
@@ -245,18 +177,12 @@
       font-weight: 500;
       color: var(--fg);
       text-align: center;
-      box-shadow:
-        0 20px 40px rgba(0,0,0,.6),
-        0 2px 4px rgba(0,0,0,.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,.6), 0 2px 4px rgba(0,0,0,.4);
       backdrop-filter: blur(16px) saturate(140%);
       -webkit-backdrop-filter: blur(16px) saturate(140%);
     }
-
     @media (prefers-color-scheme: light) {
-      .skills-list li {
-        background-color: var(--chip-bg-light);
-        box-shadow: 0 16px 32px rgba(0,0,0,.12);
-      }
+      .skills-list li { background-color: var(--chip-bg-light); box-shadow: 0 16px 32px rgba(0,0,0,.12); }
     }
 
     /* --- footer --- */
@@ -271,13 +197,9 @@
       z-index: 2;
       backdrop-filter: blur(12px) saturate(140%);
       -webkit-backdrop-filter: blur(12px) saturate(140%);
+      isolation: isolate; /* entkoppelt Compositing */
     }
-
-    @media (prefers-color-scheme: light) {
-      footer {
-        background-color: rgba(255,255,255,0.6);
-      }
-    }
+    @media (prefers-color-scheme: light) { footer { background-color: rgba(255,255,255,0.6); } }
 
     .footer-inner {
       max-width: 72rem;
@@ -288,38 +210,14 @@
       gap: 1rem;
       text-align: center;
     }
-
     .footer-actions {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      gap: .75rem;
-      justify-content: center;
-      align-items: center;
-      font-size: .9rem;
-      line-height: 1.4;
-      color: var(--muted);
+      display: flex; flex-direction: column; flex-wrap: wrap;
+      gap: .75rem; justify-content: center; align-items: center;
+      font-size: .9rem; line-height: 1.4; color: var(--muted);
     }
-
-    .footer-email {
-      word-break: break-word;
-      color: var(--muted);
-      font-size: .9rem;
-    }
-
-    .footer-email a {
-      color: var(--fg);
-      text-decoration: none;
-      border-bottom: 1px solid currentColor;
-      line-height: 1.4;
-    }
-
-    .footer-email a:hover,
-    .footer-email a:focus-visible {
-      color: var(--fg);
-      outline: none;
-      border-color: var(--fg);
-    }
+    .footer-email { word-break: break-word; color: var(--muted); font-size: .9rem; }
+    .footer-email a { color: var(--fg); text-decoration: none; border-bottom: 1px solid currentColor; line-height: 1.4; }
+    .footer-email a:hover, .footer-email a:focus-visible { color: var(--fg); outline: none; border-color: var(--fg); }
 
     .btn {
       appearance: none;
@@ -327,82 +225,25 @@
       background-color: var(--fg);
       color: var(--bg);
       text-decoration: none;
-      font-size: .9rem;
-      font-weight: 500;
-      line-height: 1.2;
+      font-size: .9rem; font-weight: 500; line-height: 1.2;
       padding: .75rem 1rem;
       border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: all .15s ease;
+      cursor: pointer; transition: all .15s ease;
       box-shadow: 0 18px 40px rgba(0,0,0,.6);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .5rem;
-      min-width: 8rem;
-      text-align: center;
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      min-width: 8rem; text-align: center;
     }
+    @media (prefers-color-scheme: light) { .btn { box-shadow: 0 16px 32px rgba(0,0,0,.12); } }
+    .btn:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+    .btn:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 24px 48px rgba(0,0,0,.7); }
+    @media (prefers-color-scheme: light) { .btn:hover { box-shadow: 0 20px 44px rgba(0,0,0,.16); } }
 
-    @media (prefers-color-scheme: light) {
-      .btn {
-        box-shadow: 0 16px 32px rgba(0,0,0,.12);
-      }
-    }
+    .footer-legal { font-size: 0.75rem; line-height: 1.6; color: var(--muted); display: flex; flex-direction: column; gap: .25rem; }
+    .footer-legal-line { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem .75rem; }
+    .footer-legal a { color: inherit; text-decoration: none; border-bottom: 1px solid currentColor; transition: color .15s ease, border-color .15s ease; line-height: 1.4; font-size: 0.75rem; }
+    .footer-legal a:hover, .footer-legal a:focus-visible { color: var(--fg); border-color: var(--fg); outline: none; }
 
-    .btn:focus-visible {
-      outline: 2px solid currentColor;
-      outline-offset: 2px;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px) scale(1.02);
-      box-shadow: 0 24px 48px rgba(0,0,0,.7);
-    }
-
-    @media (prefers-color-scheme: light) {
-      .btn:hover {
-        box-shadow: 0 20px 44px rgba(0,0,0,.16);
-      }
-    }
-
-    .footer-legal {
-      font-size: 0.75rem;
-      line-height: 1.6;
-      color: var(--muted);
-      display: flex;
-      flex-direction: column;
-      gap: .25rem;
-    }
-
-    .footer-legal-line {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: .5rem .75rem;
-    }
-
-    .footer-legal a {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px solid currentColor;
-      transition: color .15s ease, border-color .15s ease;
-      line-height: 1.4;
-      font-size: 0.75rem;
-    }
-
-    .footer-legal a:hover,
-    .footer-legal a:focus-visible {
-      color: var(--fg);
-      border-color: var(--fg);
-      outline: none;
-    }
-
-    @media (max-width: 480px) {
-      .btn {
-        width: 100%;
-      }
-    }
-
+    @media (max-width: 480px) { .btn { width: 100%; } }
   </style>
 </head>
 
@@ -429,7 +270,6 @@
 
       <div class="services" aria-labelledby="services-label">
         <div id="services-label" class="services-label">Kompetenzen</div>
-
         <ul class="skills-list">
           <li>Digitales Marketing</li>
           <li>KI-Schulungen für KMUs</li>
@@ -443,15 +283,9 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-actions">
-        <div class="footer-email">
-          <a href="mailto:sales@lead2digital.ch">sales@lead2digital.ch</a>
-        </div>
-
-        <a class="btn" href="mailto:sales@lead2digital.ch" aria-label="Kontakt per E-Mail an sales@lead2digital.ch">
-          <span>Kontakt</span>
-        </a>
+        <div class="footer-email"><a href="mailto:sales@lead2digital.ch">sales@lead2digital.ch</a></div>
+        <a class="btn" href="mailto:sales@lead2digital.ch" aria-label="Kontakt per E-Mail an sales@lead2digital.ch"><span>Kontakt</span></a>
       </div>
-
       <div class="footer-legal">
         <div class="footer-legal-line">
           <span>&copy; <span id="year"></span> Lead 2 Digital</span>
@@ -475,48 +309,33 @@
     function supportsFlagEmoji() {
       try {
         const canvas = document.createElement("canvas");
-        canvas.width = 32;
-        canvas.height = 32;
+        canvas.width = 32; canvas.height = 32;
         const ctx = canvas.getContext("2d");
         if (!ctx) return false;
-
         ctx.textBaseline = "top";
         ctx.font = "24px sans-serif";
         ctx.fillText("🇨🇭", 0, 0);
-
         const data = ctx.getImageData(0, 0, 32, 32).data;
-        // Heuristik: Wenn das Emoji nur als "CH" gerendert wird, fehlen kräftige Rottöne.
         let coloredPixelFound = false;
         for (let i = 0; i < data.length; i += 4) {
-          const r = data[i];
-          const g = data[i + 1];
-          const b = data[i + 2];
-          if (r > g + 20 || r > b + 20) {
-            coloredPixelFound = true;
-            break;
-          }
+          const r = data[i], g = data[i+1], b = data[i+2];
+          if (r > g + 20 || r > b + 20) { coloredPixelFound = true; break; }
         }
         return coloredPixelFound;
-      } catch (e) {
-        return false;
-      }
+      } catch { return false; }
     }
 
     (function handleFlagFallback() {
       const hasFlagSupport = supportsFlagEmoji();
       const emojiEl = document.querySelector(".brand-flag-emoji");
       const fallbackEl = document.querySelector(".brand-flag-fallback");
-
       if (!emojiEl || !fallbackEl) return;
-
       if (hasFlagSupport) {
-        // Emoji bleibt sichtbar
         emojiEl.style.display = "inline-block";
         fallbackEl.style.display = "none";
         fallbackEl.setAttribute("aria-hidden", "true");
         emojiEl.setAttribute("aria-hidden", "false");
       } else {
-        // Emoji ausblenden, stattdessen SVG zeigen
         emojiEl.style.display = "none";
         fallbackEl.style.display = "inline-block";
         fallbackEl.setAttribute("aria-hidden", "false");
@@ -526,26 +345,19 @@
 
     // subtle parallax-like blob movement reacting to cursor
     const root = document.documentElement;
-
     function updateBlobs(e) {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-
+      const vw = window.innerWidth, vh = window.innerHeight;
       const nx = (e.clientX ?? vw * 0.5) / vw;
       const ny = (e.clientY ?? vh * 0.5) / vh;
-
       const b1x = (10 + nx * 20).toFixed(2) + '%';
       const b1y = (5  + ny * 20).toFixed(2) + '%';
-
       const b2x = (60 + nx * 25).toFixed(2) + '%';
       const b2y = (20 + ny * 25).toFixed(2) + '%';
-
       root.style.setProperty('--blob1-x', b1x);
       root.style.setProperty('--blob1-y', b1y);
       root.style.setProperty('--blob2-x', b2x);
       root.style.setProperty('--blob2-y', b2y);
     }
-
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!prefersReduced && window.matchMedia("(pointer:fine)").matches) {
       window.addEventListener("pointermove", updateBlobs);
