@@ -12,10 +12,15 @@
       --fg: #f8fafc;
       --muted: #94a3b8;
       --border: rgba(255,255,255,0.08);
+      --chip-bg: rgba(15,23,42,0.5);
+      --chip-bg-light: rgba(255,255,255,0.6);
+
       --radius-sm: .5rem;
+      --radius-md: .75rem;
+
       --font-stack: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-      /* animated blob positions (will be updated with JS on mousemove) */
+      /* animated blob positions (updated via JS on mousemove) */
       --blob1-x: 20%;
       --blob1-y: 20%;
       --blob2-x: 80%;
@@ -121,8 +126,9 @@
       gap: 1.5rem;
       opacity: 0;
       transform: translateY(20px) scale(.98);
-      transition: opacity .6s cubic-bezier(.16,1,.3,1),
-                  transform .6s cubic-bezier(.16,1,.3,1);
+      transition:
+        opacity .6s cubic-bezier(.16,1,.3,1),
+        transform .6s cubic-bezier(.16,1,.3,1);
     }
 
     body.ready .hero {
@@ -144,6 +150,45 @@
       font-weight: 600;
       letter-spacing: -0.045em;
       margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .5rem;
+      align-items: center;
+    }
+
+    .brand-flag-wrapper {
+      display: inline-flex;
+      align-items: center;
+      height: 1em;
+      line-height: 1;
+    }
+
+    /* Emoji + Fallback-Flagge */
+    .brand-flag-emoji {
+      font-size: .8em;
+      line-height: 1;
+    }
+
+    .brand-flag-fallback {
+      display: none; /* wird bei fehlender Emoji-Unterstützung aktiviert */
+      width: 1em;
+      height: 1em;
+      min-width: 1em;
+      min-height: 1em;
+      line-height: 1;
+      border-radius: 0.2em;
+      box-shadow: 0 6px 16px rgba(0,0,0,.6);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("Flag_of_Switzerland.svg");
+    }
+
+    @media (prefers-color-scheme: light) {
+      .brand-flag-fallback {
+        box-shadow: 0 6px 12px rgba(0,0,0,.2);
+      }
     }
 
     .subtext {
@@ -156,11 +201,57 @@
       display: inline-block;
     }
 
-    .flag {
-      font-size: 1em;
-      line-height: 1;
-      margin-left: .4rem;
-      vertical-align: middle;
+    /* --- services / kompetenzen --- */
+    .services {
+      display: grid;
+      gap: 1rem;
+      justify-items: center;
+      margin-top: .5rem;
+    }
+
+    .services-label {
+      font-size: .75rem;
+      line-height: 1.4;
+      font-weight: 500;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .skills-list {
+      /* responsive grid of chips */
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(16rem,100%), 1fr));
+      gap: .75rem;
+      width: 100%;
+      max-width: 40rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .skills-list li {
+      background-color: var(--chip-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: .9rem 1rem;
+      font-size: .9rem;
+      line-height: 1.4;
+      font-weight: 500;
+      color: var(--fg);
+      text-align: center;
+      box-shadow:
+        0 20px 40px rgba(0,0,0,.6),
+        0 2px 4px rgba(0,0,0,.4);
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+    }
+
+    @media (prefers-color-scheme: light) {
+      .skills-list li {
+        background-color: var(--chip-bg-light);
+        box-shadow: 0 16px 32px rgba(0,0,0,.12);
+      }
     }
 
     /* --- footer --- */
@@ -301,7 +392,6 @@
       outline: none;
     }
 
-    /* small layout tweaks on narrow screens */
     @media (max-width: 480px) {
       .btn {
         width: 100%;
@@ -320,12 +410,28 @@
 
   <main>
     <section class="hero" aria-labelledby="l2d-headline">
-      <h1 id="l2d-headline">Lead 2 Digital</h1>
+      <h1 id="l2d-headline">
+        <span>Lead 2 Digital</span>
+        <span class="brand-flag-wrapper">
+          <span class="brand-flag-emoji" aria-hidden="false" role="img">🇨🇭</span>
+          <span class="brand-flag-fallback" aria-hidden="true"></span>
+        </span>
+      </h1>
+
       <p class="subtext">
-        Wir arbeiten mit ausgewählten Schweizer Partnern
-        <span class="flag" role="img" aria-label="Schweizer Flagge">🇨🇭</span>,
-        um zusammen die Digitalisierung voranzutreiben
+        Wir arbeiten mit ausgewählten Schweizer Partnern, um zusammen die Digitalisierung voranzutreiben
       </p>
+
+      <div class="services" aria-labelledby="services-label">
+        <div id="services-label" class="services-label">Kompetenzen</div>
+
+        <ul class="skills-list">
+          <li>Digitales Marketing</li>
+          <li>KI-Schulungen für KMUs</li>
+          <li>Webseiten</li>
+          <li>Digitale Buchungssysteme</li>
+        </ul>
+      </div>
     </section>
   </main>
 
@@ -352,13 +458,68 @@
   </footer>
 
   <script>
-    // set current year
+    // set current year in footer
     document.getElementById("year").textContent = new Date().getFullYear();
 
     // reveal hero on load
     window.addEventListener("DOMContentLoaded", function () {
       document.body.classList.add("ready");
     });
+
+    // detect if flag emojis render as actual colorful flags or fallback letters
+    function supportsFlagEmoji() {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = 32;
+        canvas.height = 32;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return false;
+
+        ctx.textBaseline = "top";
+        ctx.font = "24px sans-serif";
+        ctx.fillText("🇨🇭", 0, 0);
+
+        const data = ctx.getImageData(0, 0, 32, 32).data;
+        // Heuristik: wenn Emoji nur als "CH" gerendert wird, ist es typischerweise
+        // fast einfarbig (Graustufen). Eine echte Flagge enthält Rot/Weiss mit starkem Rot-Anteil.
+        let coloredPixelFound = false;
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          // check if pixel is noticeably reddish or generally colored
+          if (r > g + 20 || r > b + 20) {
+            coloredPixelFound = true;
+            break;
+          }
+        }
+        return coloredPixelFound;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    (function handleFlagFallback() {
+      const hasFlagSupport = supportsFlagEmoji();
+      const emojiEl = document.querySelector(".brand-flag-emoji");
+      const fallbackEl = document.querySelector(".brand-flag-fallback");
+
+      if (!emojiEl || !fallbackEl) return;
+
+      if (hasFlagSupport) {
+        // keep emoji visible, hide fallback
+        emojiEl.style.display = "inline-block";
+        fallbackEl.style.display = "none";
+        fallbackEl.setAttribute("aria-hidden", "true");
+        emojiEl.setAttribute("aria-hidden", "false");
+      } else {
+        // hide emoji, show fallback SVG icon
+        emojiEl.style.display = "none";
+        fallbackEl.style.display = "inline-block";
+        fallbackEl.setAttribute("aria-hidden", "false");
+        emojiEl.setAttribute("aria-hidden", "true");
+      }
+    })();
 
     // subtle parallax-like blob movement reacting to cursor
     const root = document.documentElement;
@@ -386,6 +547,7 @@
     if (!prefersReduced && window.matchMedia("(pointer:fine)").matches) {
       window.addEventListener("pointermove", updateBlobs);
     } else {
+      // static-ish default for touch / reduced motion
       updateBlobs({ clientX: window.innerWidth * 0.5, clientY: window.innerHeight * 0.4 });
     }
   </script>
