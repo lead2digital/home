@@ -187,9 +187,34 @@
 
     .footer-actions {
       display: flex;
+      flex-direction: column;
       flex-wrap: wrap;
       gap: .75rem;
       justify-content: center;
+      align-items: center;
+      font-size: .9rem;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    .footer-email {
+      word-break: break-word;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .footer-email a {
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      line-height: 1.4;
+    }
+
+    .footer-email a:hover,
+    .footer-email a:focus-visible {
+      color: var(--fg);
+      outline: none;
+      border-color: var(--fg);
     }
 
     .btn {
@@ -210,6 +235,8 @@
       align-items: center;
       justify-content: center;
       gap: .5rem;
+      min-width: 8rem;
+      text-align: center;
     }
 
     @media (prefers-color-scheme: light) {
@@ -236,8 +263,18 @@
 
     .footer-legal {
       font-size: 0.75rem;
-      line-height: 1.4;
+      line-height: 1.6;
       color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      gap: .25rem;
+    }
+
+    .footer-legal-line {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: .5rem .75rem;
     }
 
     .footer-legal a {
@@ -245,6 +282,8 @@
       text-decoration: none;
       border-bottom: 1px solid currentColor;
       transition: color .15s ease, border-color .15s ease;
+      line-height: 1.4;
+      font-size: 0.75rem;
     }
 
     .footer-legal a:hover,
@@ -256,13 +295,6 @@
 
     /* small layout tweaks on narrow screens */
     @media (max-width: 480px) {
-      .footer-actions {
-        flex-direction: column;
-        align-items: stretch;
-        max-width: 16rem;
-        margin: 0 auto;
-      }
-
       .btn {
         width: 100%;
       }
@@ -290,17 +322,21 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-actions">
+        <div class="footer-email">
+          <a href="mailto:sales@lead2digital.ch">sales@lead2digital.ch</a>
+        </div>
+
         <a class="btn" href="mailto:sales@lead2digital.ch" aria-label="Kontakt per E-Mail an sales@lead2digital.ch">
           <span>Kontakt</span>
-        </a>
-        <a class="btn" href="impressum.html" aria-label="Impressum anzeigen">
-          <span>Impressum</span>
         </a>
       </div>
 
       <div class="footer-legal">
-        <div>&copy; <span id="year"></span> Lead 2 Digital</div>
-        <div>Alle Rechte vorbehalten.</div>
+        <div class="footer-legal-line">
+          <span>&copy; <span id="year"></span> Lead 2 Digital</span>
+          <span>Alle Rechte vorbehalten.</span>
+          <a href="impressum.html" aria-label="Impressum anzeigen">Impressum</a>
+        </div>
       </div>
     </div>
   </footer>
@@ -315,19 +351,15 @@
     });
 
     // subtle parallax-like blob movement reacting to cursor
-    // (reduced motion users won't get smooth transitions anyway)
     const root = document.documentElement;
 
     function updateBlobs(e) {
-      // viewport size
       const vw = window.innerWidth;
       const vh = window.innerHeight;
 
-      // mouse position normalized 0..1
       const nx = (e.clientX ?? vw * 0.5) / vw;
       const ny = (e.clientY ?? vh * 0.5) / vh;
 
-      // map to % offsets for each blob
       const b1x = (10 + nx * 20).toFixed(2) + '%';
       const b1y = (5  + ny * 20).toFixed(2) + '%';
 
@@ -340,12 +372,10 @@
       root.style.setProperty('--blob2-y', b2y);
     }
 
-    // desktop / pointer devices only
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!prefersReduced && window.matchMedia("(pointer:fine)").matches) {
       window.addEventListener("pointermove", updateBlobs);
     } else {
-      // set them near center-ish for touch / reduced motion
       updateBlobs({ clientX: window.innerWidth * 0.5, clientY: window.innerHeight * 0.4 });
     }
   </script>
