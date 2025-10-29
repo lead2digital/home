@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="noindex" />
   <title>Impressum · Lead 2 Digital</title>
+
   <style>
     :root {
       --bg: #0f172a;
@@ -35,17 +36,19 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg);
+      background-color: var(--bg);
       color: var(--fg);
       font-family: var(--font-stack);
       display: flex;
       flex-direction: column;
     }
 
+    /* header with soft gradient background */
     header {
-      background: radial-gradient(circle at 20% 20%, rgba(96,165,250,.12) 0%, rgba(0,0,0,0) 60%),
-                  radial-gradient(circle at 80% 30%, rgba(16,185,129,.12) 0%, rgba(0,0,0,0) 60%),
-                  var(--bg);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(96,165,250,.12) 0%, rgba(0,0,0,0) 60%),
+        radial-gradient(circle at 80% 30%, rgba(16,185,129,.12) 0%, rgba(0,0,0,0) 60%),
+        var(--bg);
       border-bottom: 1px solid var(--border);
       padding: 2rem 1.5rem 3rem;
       text-align: center;
@@ -66,6 +69,7 @@
       color: var(--muted);
       text-decoration: none;
       border-bottom: 1px solid currentColor;
+      line-height: 1.4;
     }
     header .backlink:hover,
     header .backlink:focus-visible {
@@ -128,6 +132,20 @@
       font-size: .95rem;
       line-height: 1.5;
       white-space: pre-line;
+      margin: 0 0 .75rem 0;
+    }
+
+    a.mail {
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      line-height: 1.4;
+    }
+    a.mail:hover,
+    a.mail:focus-visible {
+      color: var(--fg);
+      outline: none;
+      border-color: var(--fg);
     }
 
     footer {
@@ -142,18 +160,6 @@
     .smallprint {
       max-width: var(--content-max);
       margin: 0 auto;
-    }
-
-    a.mail {
-      color: var(--fg);
-      text-decoration: none;
-      border-bottom: 1px solid currentColor;
-    }
-    a.mail:hover,
-    a.mail:focus-visible {
-      color: var(--fg);
-      outline: none;
-      border-color: var(--fg);
     }
   </style>
 </head>
@@ -171,7 +177,6 @@
       <h2 id="kontakt">Kontaktadresse</h2>
       <address>
 zurlex GmbH
-Rietwisstrasse 25
 9100 Herisau
 Schweiz
 
